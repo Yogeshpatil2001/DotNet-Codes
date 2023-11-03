@@ -1,0 +1,74 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.IO;
+using System.Runtime.Remoting.Messaging;
+
+namespace ABC
+{
+
+    interface Cricket
+    {
+        void play();
+        
+
+    }
+    class Sachin : Cricket
+    {
+        public void play()
+        {
+            Console.WriteLine("Straight Drive");
+        }
+    }
+    class Sehwag:Cricket
+    {
+        public void play()
+        {
+            Console.WriteLine("Square cut");
+        }
+        public void fast()
+        {
+            Console.WriteLine("He plays fast");
+        }
+    }
+    class Dhoni : Cricket
+    {
+        public void play()
+        {
+            Console.WriteLine("Helicopter Shot");
+        }
+    }
+   
+    class Program
+    {
+       
+
+        static void Main(string[] args)
+        {
+            
+            Cricket[] c1 = new Cricket[3];
+            c1[0] = new Sachin();
+            c1[1] = new Sehwag();
+            c1[2] = new Dhoni();
+
+            for(int i=0;i<=c1.Length;i++)
+            {
+                c1[i].play();
+
+                if(c1[i] is Sehwag) 
+                {
+                    Sehwag s1 = (Sehwag)c1[i];
+                    s1.fast();
+                }
+
+
+            }
+
+            
+
+         
+
+
+        }
+    }
+}
