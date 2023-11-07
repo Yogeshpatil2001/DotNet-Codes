@@ -1,0 +1,51 @@
+using System.Data.SqlClient;
+
+namespace Google
+{
+    internal class Program
+    {
+        public void display(SqlConnection con)
+        {
+            SqlCommand cmd = new SqlCommand("select * from Product", con);
+            SqlDataReader rdr = cmd.ExecuteReader();
+            if (rdr.Read())
+            {
+                while (rdr.Read()) 
+                {
+                 
+                    Console.WriteLine("{0} {1} {2} {3}", rdr["Id"], rdr["Name"], rdr["Adress"], rdr["Mobile"]);
+                }
+            }
+        }
+        public void update(SqlConnection con)
+        {
+            SqlCommand cmd = new SqlCommand("update Product set Name = 'Yash' where Id = 2", con);
+            cmd.ExecuteNonQuery();
+        }
+        public void delete(SqlConnection con)
+        {
+            SqlCommand cmd = new SqlCommand("delete from Product where Id = 3", con);
+            cmd.ExecuteNonQuery();
+        }
+        public void insert(SqlConnection con)
+        {
+            SqlCommand cmd = new SqlCommand("insert into Product (Name,Adress,Mobile) values ('Yogesh','Mumbai','45454787')", con);
+            cmd.ExecuteNonQuery();
+        }
+        static void Main(string[] args)
+        {
+            string Connectionstring = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Employee;Integrated Security=True;";
+            SqlConnection sqlcon = new SqlConnection(Connectionstring);
+
+           sqlcon.Open();
+
+            Program p = new Program();
+            p.insert(sqlcon);
+            p.update(sqlcon);
+            p.delete(sqlcon);
+            p.display(sqlcon);
+
+            sqlcon.Close();
+        }
+    }
+}
