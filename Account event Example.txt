@@ -1,0 +1,110 @@
+Create abstract class Employee having member id, name, salary, netsalary
+It has method givebasic_salary which will set netsalary after deduction 10%TDS
+ it has abstract method givebonus
+Id should be autoincrement and should be readonly property
+Write getter setter for name and salary
+Salary can be set only by child class
+Create two child class permanentEmp and tempEmp
+permanentEmp get bonus of 10%[ declare this as static veriable ]
+const maxsalay=150000.
+Ensure that you are not paying more then 150000 to any employee
+Bonus for tempEmp is 5% of the basic salary.
+When you load application it should print name of company
+When you give salary it should give SMS and Email to the employee.
+Crate Array of Employee and store all child class object.
+
+-->
+using System;
+
+abstract class Employee
+{
+    private static int nextId = 1;
+    public readonly int Id;
+    private string name;
+    private double salary;
+    protected double netSalary;
+
+    public static double PermanentEmployeeBonusRate = 0.10;
+    public const double MaxSalary = 150000;
+
+    public string Name
+    {
+        get { return name; }
+        set { name = value; }
+    }
+
+    public double Salary
+    {
+        get { return salary; }
+        protected set
+        {
+            if (value > MaxSalary)
+            {
+                Console.WriteLine("Salary exceeds the maximum allowed salary.");
+                salary = MaxSalary;
+            }
+            else
+            {
+                salary = value;
+            }
+        }
+    }
+
+    public Employee(string name, double salary)
+    {
+        Id = nextId++;
+        Name = name;
+        Salary = salary;
+    }
+
+    public abstract void GiveBonus();
+
+    public void GiveBasicSalary()
+    {
+        double tds = Salary * 0.10;
+        netSalary = Salary - tds;
+    }
+}
+
+class PermanentEmp : Employee
+{
+    public PermanentEmp(string name, double salary) : base(name, salary) { }
+
+    public override void GiveBonus()
+    {
+        double bonus = Salary * PermanentEmployeeBonusRate;
+        Console.WriteLine($"Bonus for {Name}: {bonus:C}");
+    }
+}
+
+class TempEmp : Employee
+{
+    public TempEmp(string name, double salary) : base(name, salary) { }
+
+    public override void GiveBonus()
+    {
+        double bonus = Salary * 0.05;
+        Console.WriteLine($"Bonus for {Name}: {bonus:C}");
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("Welcome to the Company");
+        Employee[] employees = new Employee[]
+        {
+            new PermanentEmp("John", 80000),
+            new TempEmp("Alice", 50000)
+        };
+
+        foreach (Employee emp in employees)
+        {
+            emp.GiveBasicSalary();
+            emp.GiveBonus();
+            Console.WriteLine($"Employee ID: {emp.Id}, Name: {emp.Name}, Net Salary: {emp.netSalary:C}");
+            // Send SMS and Email here
+        }
+    }
+}
